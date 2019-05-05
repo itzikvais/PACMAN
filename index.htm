@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="https://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Yellowtail' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="pacman.js"></script>
+</head>
+<body style="background-color: bisque;">
+<div id="top">
+    <img id="logo" src="https://i.pinimg.com/originals/72/0c/c6/720cc6853a783edfaf414ed5f91fa081.jpg" />
+    <h2>Y&I  PACMAN</h2>
+</div>
+<div id="menu">
+    <ul>
+        <li><a id="top_home">home</a></li>
+        <li><a id="top_login">Login</a></li>
+        <li><a id="top_register">Register</a></li>
+        <li><a id="top_about" data-toggle="modal" data-target="#myModal">About</a></li>
+    </ul>
+</div>
+<br>
+<br>
+<br>
+<br><br><br>
+<div id="welcome_panel" align="center" >
+    <div>
+        <button id="to_register" class="welcomeButtons" type="button">Register</button>
+        <button id="to_login" class="welcomeButtons" type="button">Login</button>
+        <button id="to_about" class="welcomeButtons" type="button" data-toggle="modal" data-target="#myModal">About</button>
+    </div>
+</div>
+    <br>
+    <div  align="center">
+        <section id="register_panel" class="labelsWhite">
+            <form id="signupform" class="gameForm" autocomplete="off" method="get" action="" novalidate="novalidate">
+                <p>
+                    <label for="username">Username</label>
+                    <br>
+                    <input id="username" name="username" type="text">
+                </p>
+
+                <p>
+                    <label for="firstname">First Name</label>
+                    <br>
+                    <input id="firstname" name="firstname" type="text">
+                </p>
+
+                <p>
+                    <label for="lastname">Last Name</label>
+                    <br>
+                    <input id="lastname" name="lastname" type="text">
+                </p>
+
+                <p>
+                    <label for="password">Password</label>
+                    <br>
+                    <input id="password" name="password" type="password" value="">
+                </p>
+
+                <p>
+                    <label for="password_confirm">Confirm Password</label>
+                    <br>
+                    <input id="password_confirm" name="password_confirm" type="password" value="">
+                </p>
+
+                <p>
+                    <label for="email">Email Address</label>
+                    <br>
+                    <input id="email" name="email" type="text" value="">
+                </p>
+
+                <p>
+                    <label> Date of Birth: </label>
+                    <br>
+                    <input class="input" id="birthday" type="date" name="birthday" >
+                </p>
+
+                <p>
+                    <input  id="signupsubmit" name="signup" type="submit" value="Sign Up">
+                </p>
+            </form>
+        </section>
+
+        <section id="login_panel" class="labelsWhite" >
+            <form class="gameForm">
+            <p>
+                <label>Username :</label>
+                <input type="text" name="demail" id="lusername">
+            </p>
+            <label>Password :</label>
+            <input type="password" name="password" id="lpassword">
+            <br>
+            <p>
+                <input  type="button" name="login" id="login" value="Login">
+            </p>
+            </form>
+
+        </section>
+        <section id="gameConfiguration" class="tabcontent" >
+            <div class="site">
+                <div class="gameForm">
+                    <div class="inputsLabel"> Select Up Key</div>
+                    <input type="text" id="upperKey">
+                    <div class="inputsLabel"> Select Down Key</div>
+                    <input type="text" id="lowerKey">
+                    <div class="inputsLabel"> Select Left Key</div>
+                    <input type="text" id="leftKey">
+                    <div class="inputsLabel"> Select Right Key</div>
+                    <input type="text" id="rightKey">
+                    <div class="inputsLabel">Select Game Time</div>
+                    <select id="timeChoice">
+                        <option value="60">1 Minute</option>
+                        <option value="90">1.5 Minute</option>
+                        <option value="120">2 Minutes</option>
+                        <option value="180">3 Minutes</option>
+                        <option value="1000">Unlimited</option>
+                    </select>
+                    <div class="inputsLabel">Select Amount Of Food</div>
+                    <select id="foodChoice">
+                        <option value="50">50</option>
+                        <option value="60">60</option>
+                        <option value="70">70</option>
+                        <option value="80">80</option>
+                        <option value="90">90</option>
+                    </select>
+                    <p class="inputsLabel">Select Amount Of Ghosts</p>
+                    <select id="ghostChoise">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                    <br><br>
+                    <button id="customPlay" class="startButton"  type="button">Start Game</button>
+                    <button id="randomPlay" class="startButton" type="button">Random</button>
+                </div>
+            </div>
+        </section>
+        <section id="game_panel" style=" position: absolute;">
+
+
+            <audio id="background_music" loop>
+                <source src="Pac-Man Fever.mp3" type="audio/ogg" >
+            </audio>
+
+
+            <button id="music_button" class="gameButtons" type="button" >Music</button>
+            <button id="new_game" class="gameButtons" type="button"  >New Game</button>
+
+            <table>
+                <tr class=labelsWhite>
+                    <td>Score</td>
+                    <td>Time</td>
+                    <td>Lives</td>
+                </tr>
+                <tr>
+                    <td><input id="lblScore" type="text" style="background:white;" width="260" /></td>
+                    <td><input id="lblTime" type="text" style="background:white;" width="260"/></td>
+                    <td><input id="lblLives" type="text" style="background:white;" width="260"/></td>
+                </tr>
+            </table>
+
+            <br/>
+
+
+            <canvas id="canvas" height="900" width="600" style="background-color: white; "></canvas>
+        </section>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">About Us</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>This website was created by Yakir Tsizer and Itzik Vaisman.<br/>
+                            we used jQuery couple of times - for the jQuery validation form <br/>
+                            library and for section handling - show the current chosen section.<br/>
+                            The work was interesting as well as challenging, most of the <br/>
+                            difficulties were part of jQuery validation library. The JS <br/>
+                            programming was challenging as well. <br/>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div align="center">
+<footer >
+    <p><font id="footerContent" color="black" align="center">Created by Yakir Tsizer and Itzik Vaisman. -- Contact us: tsizer@post.bgu.ac.il </font></p>
+</footer>
+</div>
+</body>
+
+</html>
