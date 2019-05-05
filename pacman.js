@@ -61,7 +61,6 @@ $(document).ready(function () {
     });
     document.getElementById("leftKey").addEventListener("keydown", function (event) {
         leftKey=event.keyCode;
-        alert(leftKey);
     });
     document.getElementById("rightKey").addEventListener("keydown", function (event) {
         rightKey=event.keyCode;
@@ -669,7 +668,7 @@ $(document).ready(function () {
 
                 sumPoints= food*0.6*5+food*0.3*15+food*0.1*25;
 
-                if ((time_elapsed >= maxtime) || (!bonus_eaten&&score==sumPoints)||(score==sumPoints+50))
+                if ((time_elapsed >= maxtime) || (!bonus_eaten&&score==sumPoints)||(bonus_eaten&&score==sumPoints+50))
                 {
                     win();
                 }
