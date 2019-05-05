@@ -29,9 +29,6 @@ $(document).ready(function () {
     document.getElementById("to_login").addEventListener("click", function () {
         showSection("login_panel");
     });
-    document.getElementById("login").addEventListener("click", function () {
-        showSection("gameConfiguration");
-    });
         document.getElementById("customPlay").addEventListener("click", function () {
         if(upperKey==null||lowerKey==null||leftKey==null||rightKey==null)
             alert("you must enter your wanted keys to play");
@@ -103,18 +100,7 @@ $(document).ready(function () {
     default_user.j = 'a'; //password
     user_list.push(default_user);
 
-    /*
 
-
-
-
-                           LOGIN SECTION
-
-
-
-
-
-    */
 
     $("#login").click(function () {
 
@@ -125,7 +111,7 @@ $(document).ready(function () {
             if (user_list[k].i == username) {
                 if (user_list[k].j == password) {
                     alert('Successfully Logged in...')
-                    //game_is_on();
+                    showSection('gameConfiguration')
                     current_username = username;
                 }
                 else {
