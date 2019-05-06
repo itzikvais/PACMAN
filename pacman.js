@@ -1,19 +1,19 @@
 $(document).ready(function () {
 
 
-        var pacman_interval;
-        var ghost_interval;
-        var bonus_interval;
-        var monsters;
-        var time_elapsed;
-        var maxtime;
-        var current_lives;
+        var pacInt;
+        var ghostInt;
+        var bonusInt;
+        var ghosts;
+        var passedTime;
+        var gameTime;
+        var playerLives;
         var food;
         var upperKey;
         var lowerKey;
         var leftKey;
         var rightKey;
-        var current_username;
+        var logedInUser;
     document.getElementById("top_home").addEventListener("click", function () {
         showSection("welcome_panel");
     });
@@ -36,16 +36,16 @@ $(document).ready(function () {
             alert("you must enter different keys to play");
         else {
             showSection("game_panel");
-            maxtime = document.getElementById("timeChoice").value;
+            gameTime = document.getElementById("timeChoice").value;
             food = document.getElementById("foodChoice").value;
-            monsters = document.getElementById("ghostChoise").value;
+            ghosts = document.getElementById("ghostChoise").value;
             playGame();
         }
     });
     document.getElementById("randomPlay").addEventListener("click", function () {
-        maxtime = 60;
+        gameTime = 60;
         food = 50;
-        monsters = 1;
+        ghosts = 1;
         upperKey=38;
         rightKey=39;
         lowerKey=40;
@@ -67,9 +67,9 @@ $(document).ready(function () {
     });
 
     function reset_intervals() {
-        window.clearInterval(pacman_interval);
-        window.clearInterval(ghost_interval);
-        window.clearInterval(bonus_interval);
+        window.clearInterval(pacInt);
+        window.clearInterval(ghostInt);
+        window.clearInterval(bonusInt);
         music_on=false;
         document.getElementById("background_music").pause();
 
@@ -111,7 +111,7 @@ $(document).ready(function () {
                 if (user_list[k].j == password) {
                     alert('Successfully Logged in...')
                     showSection('gameConfiguration')
-                    current_username = username;
+                    logedInUser = username;
                 }
                 else {
                     alert('Wrong Password')
@@ -285,11 +285,12 @@ $(document).ready(function () {
             var score;
             var pac_color;
             var start_time;
-            current_lives = 3;
+            playerLives = 3;
             var pacman_direction = "right";
 
 
-            var bonus_eaten;
+            var bonusEat;
+            var bonusTimesUp;
 
 
 
@@ -318,7 +319,7 @@ $(document).ready(function () {
                 else if(score >= 300){
                     music_on=false;
                     document.getElementById("background_music").pause();
-                    window.alert("We Got A Winner!!!");
+                    window.alert("You are our WINNER!!");
                     showSection("gameConfiguration");
 
                 }
@@ -334,10 +335,11 @@ $(document).ready(function () {
 
             function Start() {
                 board = new Array();
-                bonus_eaten = false;
+                bonusEat = false;
+                bonusTimesUp=false;
                 score = 0;
                 pac_color = "yellow";
-                current_lives;
+                playerLives;
 
                 var food_remainA = food*0.6;
                 var food_remainB = food*0.3;
@@ -387,12 +389,12 @@ $(document).ready(function () {
                 ghost_pos[0].i = 0;
                 ghost_pos[0].j = 0;
 
-                if (monsters > 1 ){
+                if (ghosts > 1 ){
                     board[0][18] = "red_ghost";
                     ghost_pos[1].i = 0;
                     ghost_pos[1].j = 18;
                 }
-                if (monsters > 2){
+                if (ghosts > 2){
                     board[16][18] = "green_ghost";
                     ghost_pos[2].i = 16;
                     ghost_pos[2].j = 18;
@@ -439,13 +441,13 @@ $(document).ready(function () {
                     keysDown[e.keyCode] = true;
                 }, false);
 
-                pacman_interval = setInterval(update_position, 150);
+                pacInt = setInterval(update_position, 150);
 
 
-                ghost_interval = setInterval(update_ghost_move, 350);
+                ghostInt = setInterval(update_ghost_move, 350);
 
 
-                bonus_interval = setInterval(update_bonus_move, 150);
+                bonusInt = setInterval(update_bonus_move, 150);
 
 
             }
@@ -458,10 +460,10 @@ $(document).ready(function () {
             function update_ghost_move() {
                 perform_ghost_move(ghost_next_move(0), 0);
 
-                if (monsters>1)
+                if (ghosts>1)
                     perform_ghost_move(ghost_next_move(1), 1);
 
-                if (monsters>2)
+                if (ghosts>2)
                     perform_ghost_move(ghost_next_move(2), 2);
 
                 draw();
@@ -499,9 +501,9 @@ $(document).ready(function () {
                     music_on=true;
                     document.getElementById("background_music").play();
 
-                    if (current_lives > 1) {
+                    if (playerLives > 1) {
                         alert("Round Lost");
-                        current_lives -= 1;
+                        playerLives -= 1;
                         Start();
                     }
                     else {
@@ -514,15 +516,15 @@ $(document).ready(function () {
 
 
                 if(bonus_pos.i == pacman_pos.i && bonus_pos.j == pacman_pos.j){
-                    bonus_eaten = true;
+                    bonusEat = true;
                     score+=50;
                 }
                 canvas.width = 17 * 30; //clean board
                 canvas.height = 19 * 30 ;
 
                 lblScore.value = score;
-                lblTime.value = time_elapsed;
-                lblLives.value = current_lives;
+                lblTime.value = passedTime;
+                lblLives.value = playerLives;
                 for (var i = 0; i < 17; i++) {
                     for (var j = 0; j < 19; j++) {
                         var center = new Object();
@@ -575,7 +577,7 @@ $(document).ready(function () {
                         }
 
                         else if (board[i][j] == "bonus") {
-                            if(!bonus_eaten)
+                            if(!bonusEat&&!bonusTimesUp)
                                 draw_bonus(center.x, center.y)
                         }
 
@@ -664,11 +666,12 @@ $(document).ready(function () {
 
 
                 var currentTime = new Date();
-                time_elapsed = (currentTime - start_time) / 1000;
+                passedTime = (currentTime - start_time) / 1000;
 
                 sumPoints= food*0.6*5+food*0.3*15+food*0.1*25;
-
-                if ((time_elapsed >= maxtime) || (!bonus_eaten&&score==sumPoints)||(bonus_eaten&&score==sumPoints+50))
+                if(passedTime>=gameTime/4)
+                    bonusTimesUp=true;
+                if ((passedTime >= gameTime) || (!bonusEat&&score==sumPoints)||(bonusEat&&score==sumPoints+50))
                 {
                     win();
                 }
@@ -778,18 +781,11 @@ $(document).ready(function () {
                     context.fillStyle = "black"; //color
                     context.fill();
                 }
-                if (color == "pink") {
-                    context.beginPath();
-                    context.arc(x - 6, y - 5.5, 1.5, 0, 2 * Math.PI); // circle
-                    context.arc(x + 6, y - 2.5, 1.5, 0, 2 * Math.PI); // circle
-                    context.fillStyle = "black"; //color
-                    context.fill();
-                }
 
             }
 
             function update_bonus_move() {
-                if(!bonus_eaten){
+                if(!bonusEat&&!bonusTimesUp){
                     var moves = [];
 
                     var current = is_point_tile[4]
